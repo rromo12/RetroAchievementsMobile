@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="navigation_drawer_string_array">
+        <item>My Feed</item>
+        <item>My Recent Achievements</item>
+        <item>My Recently Played</item>
+        <item>My Games</item>
+        <item>Top 10</item>
+        <item>My Profile</item>
+        <item>Find Player</item>
+    </string-array>
+</resources>

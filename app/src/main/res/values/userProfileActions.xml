@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="userProfileActionsArray">
+        <item>Feed</item>
+        <item>Recently Played</item>
+        <item>Recent Achievements</item>
+        <item>Games</item>
+    </string-array>
+</resources>
