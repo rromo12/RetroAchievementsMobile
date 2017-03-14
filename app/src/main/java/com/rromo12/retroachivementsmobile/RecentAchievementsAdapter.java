@@ -25,6 +25,7 @@ public class RecentAchievementsAdapter extends RecyclerView.Adapter<RecentAchiev
     //For Use In Main Activity
     private JSONArray feed;
     private List<Structures.FeedItem> feedItems = new LinkedList<>();
+    String userName;
 
 
 

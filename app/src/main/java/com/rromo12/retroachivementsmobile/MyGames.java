@@ -41,8 +41,7 @@ public class MyGames extends BaseActivity {
         TextView error_message = (TextView) findViewById(R.id.error_message);
         if(userExists) {
             //Fetch User Feed
-            URL url = NetworkUtils.buildUserRecentlyPlayedUrl(userName, 200);
-            new MyGames_JsonTask().execute(url);
+            new MyGames_JsonTask().execute(userName);
             getSupportActionBar().setTitle(userName + getString(R.string.my_games));
             mRecyclerView.setVisibility(View.VISIBLE);
             error_message.setVisibility(View.GONE);
@@ -62,8 +61,8 @@ public class MyGames extends BaseActivity {
         }
     }
 
-    public class MyGames_JsonTask extends AsyncTask<URL, Void, String> implements MyGamesAdapter.ListItemClickListener{
-
+    public class MyGames_JsonTask extends AsyncTask<String, Void, String> implements MyGamesAdapter.ListItemClickListener{
+        String userName;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -71,8 +70,9 @@ public class MyGames extends BaseActivity {
         }
 
         @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
+        protected String doInBackground(String... params) {
+            userName = params[0];
+            URL searchUrl = NetworkUtils.buildUserRecentlyPlayedUrl(userName, 200);
             String jsonText = null;
             try {
                 jsonText = NetworkUtils.getResponseFromHttpUrl(searchUrl);
@@ -88,7 +88,7 @@ public class MyGames extends BaseActivity {
             //Recently Played Adapter
             MyGamesAdapter adapter;
             try {
-                adapter = new MyGamesAdapter(jsonText , this);
+                adapter = new MyGamesAdapter(jsonText , this,userName);
                 mRecyclerView.setAdapter(adapter);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -96,8 +96,9 @@ public class MyGames extends BaseActivity {
 
         }
         @Override
-        public  void onListItemClick(int gameId){
+        public  void onListItemClick(int gameId,String userName){
             Intent intent = new Intent(getBaseContext(), GameProgress.class);
+            intent.putExtra("user_name", userName);
             intent.putExtra("GameID", gameId);
             intent.putExtra("child", 1);
             startActivity(intent);

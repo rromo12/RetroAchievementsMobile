@@ -6,6 +6,12 @@ import org.json.JSONObject;
 import java.util.Date;
 
 class Structures {
+        static class GameProgressTag{
+            String user;
+            int gameId;
+
+
+        }
       static class Achievement {
         String GameTitle;
         String GameIcon;

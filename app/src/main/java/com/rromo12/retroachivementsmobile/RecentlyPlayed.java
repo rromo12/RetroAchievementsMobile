@@ -64,8 +64,7 @@ public class RecentlyPlayed extends BaseActivity {
         boolean userExists = NetworkUtils.userExists(userName);
         TextView error_message = (TextView) findViewById(R.id.error_message);
         if(userExists){
-            URL url = NetworkUtils.buildUserRecentlyPlayedUrl(userName,10);
-            new RecentlyPlayed_JsonTask().execute(url);
+            new RecentlyPlayed_JsonTask().execute(userName);
             getSupportActionBar().setTitle(userName + getString(R.string.recently_played));
             mRecyclerView.setVisibility(View.VISIBLE);
             error_message.setVisibility(View.GONE);
@@ -79,8 +78,8 @@ public class RecentlyPlayed extends BaseActivity {
     }
 
 
-    public class RecentlyPlayed_JsonTask extends AsyncTask<URL, Void, String> implements RecentlyPlayedAdapter.ListItemClickListener{
-
+    public class RecentlyPlayed_JsonTask extends AsyncTask<String, Void, String> implements RecentlyPlayedAdapter.ListItemClickListener{
+        String userName;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -88,8 +87,9 @@ public class RecentlyPlayed extends BaseActivity {
         }
 
         @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
+        protected String doInBackground(String... params) {
+            userName = params[0];
+            URL searchUrl = NetworkUtils.buildUserRecentlyPlayedUrl(userName,10);
             String jsonText = null;
             try {
                 jsonText = NetworkUtils.getResponseFromHttpUrl(searchUrl);
@@ -105,7 +105,7 @@ public class RecentlyPlayed extends BaseActivity {
             //Recently Played Adapter
             RecentlyPlayedAdapter adapter;
             try {
-                adapter = new RecentlyPlayedAdapter(jsonText,this);
+                adapter = new RecentlyPlayedAdapter(jsonText,this,userName);
                 mRecyclerView.setAdapter(adapter);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -113,8 +113,9 @@ public class RecentlyPlayed extends BaseActivity {
 
         }
         @Override
-        public  void onListItemClick(int gameId){
+        public  void onListItemClick(int gameId,String userName){
             Intent intent = new Intent(getBaseContext(), GameProgress.class);
+            intent.putExtra("user_name", userName);
             intent.putExtra("GameID", gameId);
             intent.putExtra("child", 1);
             startActivity(intent);

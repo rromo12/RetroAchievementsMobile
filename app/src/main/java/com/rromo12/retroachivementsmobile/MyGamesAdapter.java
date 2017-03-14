@@ -24,10 +24,11 @@ public class MyGamesAdapter extends RecyclerView.Adapter<MyGamesAdapter.GameItem
         final private ListItemClickListener mOnClickListener;
         private JSONArray myGamesData;
         List<Structures.Game> gamesList = new LinkedList<Structures.Game>();
+        String user;
 
-
-        MyGamesAdapter(String jsonText,ListItemClickListener listener) throws JSONException {
+        MyGamesAdapter(String jsonText,ListItemClickListener listener,String userName) throws JSONException {
             mOnClickListener = listener;
+            user =userName;
             try {
                 myGamesData = new JSONArray(jsonText);
 
@@ -63,7 +64,7 @@ public class MyGamesAdapter extends RecyclerView.Adapter<MyGamesAdapter.GameItem
             }
         }
         public interface ListItemClickListener {
-            void onListItemClick(int gameId);
+            void onListItemClick(int gameId,String userName);
 
         }
         @Override
@@ -88,7 +89,10 @@ public class MyGamesAdapter extends RecyclerView.Adapter<MyGamesAdapter.GameItem
             //Set Icon
             URL image = NetworkUtils.buildGameIconURL(game.GameIcon);
             Picasso.with(holder.mIcon.getContext()).load(image.toString()).resize(96,96).placeholder( R.drawable.progress_animation ).into(holder.mIcon);
-            holder.itemView.setTag(game.GameID);
+            Structures.GameProgressTag  tag = new Structures.GameProgressTag();
+            tag.gameId = game.GameID;
+            tag.user = user;
+            holder.itemView.setTag(tag);
 
         }
         @Override
@@ -119,9 +123,10 @@ public class MyGamesAdapter extends RecyclerView.Adapter<MyGamesAdapter.GameItem
 
             @Override
             public void onClick(View v) {
-                int gameId = (int) v.getTag();
-                //
-                mOnClickListener.onListItemClick(gameId);
+                Structures.GameProgressTag tag = (Structures.GameProgressTag) v.getTag();
+                int gameId = tag.gameId;
+                String userName = tag.user;
+                mOnClickListener.onListItemClick(gameId,userName);
             }
 
         }

@@ -1,5 +1,7 @@
 # Built application files
 *.apk
+!RetroAchievementsMobile.apk
+
 *.ap_
 
 # Files for the Dalvik VM

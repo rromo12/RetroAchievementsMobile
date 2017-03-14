@@ -27,10 +27,11 @@ public class RecentlyPlayedAdapter extends RecyclerView.Adapter<RecentlyPlayedAd
     final private ListItemClickListener mOnClickListener;
     private JSONArray recentlyPlayedData;
     List<Structures.Game> gamesList = new LinkedList<Structures.Game>();;
+    String user;
 
-
-    RecentlyPlayedAdapter(String jsonText,ListItemClickListener listener) throws JSONException {
+    RecentlyPlayedAdapter(String jsonText,ListItemClickListener listener,String userName) throws JSONException {
         mOnClickListener = listener;
+        user = userName;
         try {
             recentlyPlayedData = new JSONArray(jsonText);
 
@@ -62,7 +63,7 @@ public class RecentlyPlayedAdapter extends RecyclerView.Adapter<RecentlyPlayedAd
         }
     }
     public interface ListItemClickListener {
-        void onListItemClick(int gameId);
+        void onListItemClick(int gameId,String userName);
 
     }
     @Override
@@ -89,7 +90,10 @@ public class RecentlyPlayedAdapter extends RecyclerView.Adapter<RecentlyPlayedAd
         URL image = NetworkUtils.buildGameIconURL(game.GameIcon);
         Picasso.with(holder.mIcon.getContext()).load(image.toString()).resize(96,96).placeholder( R.drawable.progress_animation ).into(holder.mIcon);
         //SET TAG GAME ID to KEY CONSTANT
-        holder.itemView.setTag(game.GameID);
+        Structures.GameProgressTag tag = new Structures.GameProgressTag();
+        tag.gameId = game.GameID;
+        tag.user = user;
+        holder.itemView.setTag(tag);
 
     }
     @Override
@@ -120,9 +124,10 @@ public class RecentlyPlayedAdapter extends RecyclerView.Adapter<RecentlyPlayedAd
 
         @Override
         public void onClick(View v) {
-            int gameId = (int) v.getTag();
-            //
-            mOnClickListener.onListItemClick(gameId);
+            Structures.GameProgressTag tag = (Structures.GameProgressTag) v.getTag();
+            int gameId = tag.gameId;
+            String userName = tag.user;
+            mOnClickListener.onListItemClick(gameId,user);
         }
 
     }

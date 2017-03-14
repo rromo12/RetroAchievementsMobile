@@ -38,7 +38,13 @@ public class GameProgress extends BaseActivity{
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             preferences.registerOnSharedPreferenceChangeListener(this);
             //Get user name and api key from preferences
-            userName = preferences.getString(getString(R.string.pref_uname_key), "None");
+            if(getIntent().hasExtra("user_name")) {
+                userName = getIntent().getStringExtra("user_name");
+            } else {
+                //Do stuff with intent data here
+                userName = preferences.getString(getString(R.string.pref_uname_key), "None");
+            }
+
             gameId = this.getIntent().getIntExtra("GameID",228);
 
         }
