@@ -4,6 +4,9 @@ Allows easy access to user feed, recent achievements, profiles of top 10 users, 
 
 ## [Download APK](https://github.com/rromo12/RetroAchievementsMobile/blob/master/Release/RetroAchievementsMobile.apk?raw=true) (Requires Android 4.4.2+)
 
+# Contact
+If you have any issues or questions please email retroachievementsapp@gmail.com and i'll try to get back to you ASAP
+
 # Screenshots:
 ### User Feed
 ![](https://raw.githubusercontent.com/rromo12/RetroAchievementsMobile/master/Screenshots/Screenshot_2017-03-13-21-56-42.png)
